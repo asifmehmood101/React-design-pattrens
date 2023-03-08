@@ -1,25 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import ContainerListing from './components/container/ContainerListings';
+import withLoader from './components/HOC/withLoader';
+import {
+  Kelvin,
+  TemperatureConverter,
+  Fahrenheit,
+} from './components/Render Props Pattern/TemperatureConverter';
+import './style.css';
+import { FetchingContext, FetchingProvider } from './Context/Fetching';
+export const ListingHOC = withLoader(
+  ContainerListing,
+  'https://house-lydiahallie.vercel.app/api/listings',
+);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <FetchingProvider>
+      <TemperatureConverter
+        Kelvin={({ value }: any) => <Kelvin value={value} />}
+        Fahrenheit={({ value }: any) => <Fahrenheit value={value} />}
+      />
+      <ContainerListing />
+    </FetchingProvider>
   );
 }
 
